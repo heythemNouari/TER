@@ -1,0 +1,313 @@
+<!doctype html>
+<html class="fixed">
+	<head>
+		<!-- Basic -->
+		<meta charset="UTF-8">
+
+		<title>Estimation.com</title>
+		<meta name="keywords" content="HTML5 Admin Template" />
+		<meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
+		<meta name="author" content="JSOFT.net">
+
+		<!-- Mobile Metas -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+		<!-- Web Fonts  -->
+		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+
+		<!-- Vendor CSS -->
+		<link rel="stylesheet" href="{{ asset('resources/assets/vendor/bootstrap/css/bootstrap.css')}}" />
+		<link rel="stylesheet" href="{{ asset('resources/assets/vendor/font-awesome/css/font-awesome.css') }}" />
+		<link rel="stylesheet" href="{{ asset('resources/assets/vendor/magnific-popup/magnific-popup.css') }}" />
+		<link rel="stylesheet" href="{{ asset('resources/assets/vendor/bootstrap-datepicker/css/datepicker3.css') }}" />
+
+        {% block head %}
+        
+        {% endblock %}}
+
+		<!-- Theme CSS -->
+		<link rel="stylesheet" href="{{ asset('resources/assets/stylesheets/theme.css') }}" />
+
+		<!-- Skin CSS -->
+		<link rel="stylesheet" href="{{ asset('resources/assets/stylesheets/skins/default.css') }}" />
+
+		<!-- Theme Custom CSS -->
+		<link rel="stylesheet" href="{{ asset('resources/assets/stylesheets/theme-custom.css') }}">
+
+		<!-- Head Libs -->
+		<script src="{{ asset('resources/assets/vendor/modernizr/modernizr.js') }}"></script>
+
+
+	</head>
+    {% block menu %}
+	<body>
+		<section class="body">
+
+			<!-- start: header -->
+			<header class="header">
+				<div class="logo-container">
+					<a href="../" class="logo">
+						<a class="navbar-brand smothscroll" href="{{ path('dashboard') }}"><font color="#777"><b>Estimation.com</b> </font> </a> <height="35" color="#777" alt="Estimation.com" />
+					</a>
+					<div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
+						<i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+					</div>
+				</div>
+			
+				<!-- start: search & user box -->
+				<div class="header-right">
+		
+		
+			
+					<span class="separator"></span>
+			
+					<div id="userbox" class="userbox">
+						<a href="#" data-toggle="dropdown">
+							<figure class="profile-picture">
+								<img src="{{ asset('resources/assets/images/!logged-user.jpg') }}" alt="Joseph Doe" class="img-circle" data-lock-picture="{{ asset('resources/assets/images/!logged-user.jpg') }}" />
+							</figure>
+							<div class="profile-info">
+								<span class="name">{{ app.user.username }}</span>
+								<span class="role">
+								{% if is_granted('ROLE_ADMIN') %}
+								Administrateur
+								{% elseif is_granted('ROLE_COMMERCIAL') %}
+								Commercial
+								{% elseif is_granted('ROLE_USER') %}
+								Membre
+								{% else %}
+								Non enregistré
+
+								{% endif %}</span>
+							</div>
+			
+							<i class="fa custom-caret"></i>
+						</a>
+			
+						<div class="dropdown-menu">
+							<ul class="list-unstyled">
+								<li class="divider"></li>
+								<li>
+									<a role="menuitem" tabindex="-1" href="{{ path('logout') }}"><i class="fa fa-power-off"></i> Se déconnecter</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- end: search & user box -->
+			</header>
+			<!-- end: header -->
+
+			<div class="inner-wrapper">
+				<!-- start: sidebar -->
+				<aside id="sidebar-left" class="sidebar-left">
+				
+					<div class="sidebar-header">
+						<div class="sidebar-title">
+							Navigation
+						</div>
+						<div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+							<i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+						</div>
+					</div>
+				
+					<div class="nano">
+						<div class="nano-content">
+							<nav id="menu" class="nav-main" role="navigation">
+								<ul class="nav nav-main">
+									<li class="nav-active">
+										<a href="{{ path('dashboard') }}">
+											<i class="fa fa-home" aria-hidden="true"></i>
+											<span>Tableau de bord</span>
+										</a>
+									</li>
+									
+									<li class="nav-active">
+										<a href="{{ path('new-project') }}">
+											<i class="fa fa-list-alt" aria-hidden="true"></i>
+											<span>Nouveau projet</span>
+										</a>
+									</li>
+									{% if is_granted('ROLE_ADMIN') %}
+
+									<li class="nav-active">
+										<a href="{{ path('createMember') }}">
+											<i class="fa fa-user" aria-hidden="true"></i>
+											<span>Créer un nouveau membre</span>
+										</a>
+									</li>
+
+																		
+									<li class="nav-active">
+										<a href="{{ path('listeMembreAdmin') }}">
+											<i class="fa fa-user" aria-hidden="true"></i>
+											<span>Liste des membres</span>
+										</a>
+									</li>
+
+									<li class="nav-active">
+										<a href="{{ path('listeAdmin') }}">
+											<i class="fa fa-table" aria-hidden="true"></i>
+											<span>Liste des projets</span>
+										</a>
+									</li>
+									<li class="nav-active">
+										<a href="{{ path('listePrix') }}">
+											<i class="fa fa-eur" aria-hidden="true"></i>
+											<span>Table des prix</span>
+										</a>
+									</li>
+
+									{% endif %}
+		
+									
+								</ul>
+							</nav>
+				
+							<hr class="separator" />
+				
+							<div class="sidebar-widget widget-tasks">
+								<div class="widget-header">
+									<h6>Mes projets</h6>
+									<div class="widget-toggle">+</div>
+								</div>
+								<div class="widget-content">
+									<ul class="list-unstyled m-none">
+										{{ render(controller('App\\Controller\\ProjectController::menu')) }}
+									</ul>
+								</div>
+							</div>
+				
+							<hr class="separator" />
+				
+							
+						</div>
+				
+					</div>
+				
+				</aside>
+				<!-- end: sidebar -->
+
+				<section role="main" class="content-body">
+					<header class="page-header">
+						{% block title %}{% endblock %}
+					
+						<div class="right-wrapper pull-right">
+							<ol class="breadcrumbs">
+								<li>
+									<a href="{{ path('dashboard') }}">
+										<i class="fa fa-home"></i>
+									</a>
+								</li>
+								<li>
+                                <span> {% block pageactuelle %}{% endblock %} </span>
+								</li>
+							</ol>
+					
+							<a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+						</div>
+					</header>
+					
+                    {% endblock %}
+					
+					{# read and display just one flash message type #}
+					{% for message in app.flashes('notice') %}
+    					<div class="flash-notice">
+        				{{ message }}
+						</div>
+					{% endfor %}
+					{% for message in app.flashes('success') %}
+
+            <div class="alert alert-success">
+
+                {{ message }}
+
+            </div>
+
+        {% endfor %}
+		
+		{% for message in app.flashes('danger') %}
+
+            <div class="alert alert-danger" role="alert">
+
+                {{ message }}
+
+            </div>
+
+        {% endfor %}
+
+					{% block body %}
+
+					{% endblock %}
+
+						
+							
+					<!-- end: page -->
+				</section>
+			</div>
+
+            {% block aside %}
+
+			<aside id="sidebar-right" class="sidebar-right">
+				<div class="nano">
+					<div class="nano-content">
+						<a href="#" class="mobile-close visible-xs">
+							Collapse <i class="fa fa-chevron-right"></i>
+						</a>
+			
+						<div class="sidebar-right-wrapper">
+			
+							<div class="sidebar-widget widget-calendar">
+								<h6>Calendrier</h6>
+								<div data-plugin-datepicker data-plugin-skin="dark" ></div>
+
+                                <!--
+			
+								<ul>
+									<li>
+										<time datetime="2014-04-19T00:00+00:00">04/19/2014</time>
+										<span>Company Meeting</span>
+									</li>
+								</ul>
+                                
+                                -->
+							</div>
+			
+						</div>
+					</div>
+				</div>
+			</aside>
+
+             {% endblock %}
+		</section>
+
+		<!-- Vendor -->
+		<script src="{{ asset('resources/assets/vendor/jquery/jquery.js') }}"></script>
+		<script src="{{ asset('resources/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js') }}"></script>
+		<script src="{{ asset('resources/assets/vendor/bootstrap/js/bootstrap.js') }}"></script>
+		<script src="{{ asset('resources/assets/vendor/nanoscroller/nanoscroller.js') }}"></script>
+		<script src="{{ asset('resources/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
+		<script src="{{ asset('resources/assets/vendor/magnific-popup/magnific-popup.js') }}"></script>
+		<script src="{{ asset('resources/assets/vendor/jquery-placeholder/jquery.placeholder.js') }}"></script>
+		
+		
+		<!-- Theme Base, Components and Settings -->
+		<script src="{{ asset('resources/assets/javascripts/theme.js') }}"></script>
+		
+		<!-- Theme Custom -->
+		<script src="{{ asset('resources/assets/javascripts/theme.custom.js') }}"></script>
+		
+		<!-- Theme Initialization Files -->
+		<script src="{{ asset('resources/assets/javascripts/theme.init.js') }}"></script>
+
+
+		<!-- Examples -->
+		<script src="{{ asset('resources/assets/javascripts/dashboard/examples.dashboard.js') }}"></script>
+		<script src="{{ asset('resources/assets/javascripts/ui-elements/examples.notifications.js') }}"></script>
+
+		{% block javascript %}
+
+		{% endblock %}
+
+	</body>
+</html>

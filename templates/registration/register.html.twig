@@ -1,0 +1,95 @@
+{% extends "layout.html.twig" %}
+
+
+{% block title %}
+
+  Inscription - {{ parent() }}
+
+{% endblock %}
+
+{% block menu %}
+
+  <!-- Fixed navbar -->
+  <div id="navigation" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{{ path('index') }}#home"><b>Estimation.com</b></a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="{{ path('index') }}#home">Accueil</a></li>
+          <li><a href="{{ path('index') }}#desc">Description</a></li>
+          <li><a href="{{ path('index') }}#showcase">Photos</a></li>
+          <li><a href="{{ path('index') }}#contact">Contact</a></li>
+          {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+          <li><a href="{{ path('dashboard') }}">Mon profil ({{ app.user.username }})</a></li>
+
+          <li><a href="{{ path('logout') }}">Deconnexion</a></li>
+          {% else %}
+            <li><a href="{{ path('connexion') }}">Connexion</a></li>
+            <li><a href="{{ path('inscription') }}">Inscription</a></li>
+          {% endif %}
+          
+        </ul>
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+  </div>
+
+  {% endblock %}
+
+{% block body %}
+
+  <section id="inscription" name="inscription">
+    <!-- INTRO WRAP -->
+        <div class="row centered">
+          <h1>Inscription</h1>
+          <br>
+          <br>
+          <div class="wrapper fadeInDown zero-raduis">
+            <div id="formContent">
+              <!-- Tabs Titles -->
+    
+              <!-- Icon -->
+              <div class="fadeIn first">
+                <!-- <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" /> -->
+                <h2 class="my-5">Inscrivez-vous</h2>
+              </div>
+    
+              <!-- Register Form -->
+
+              {{ form_start(form) }}
+                {{ form_row(form.username, {'attr': {'class': 'fadeIn second zero-raduis', 'placeholder' : 'Identifiant'}} ) }}  
+                {{ form_row(form.email, {'attr': {'class': 'fadeIn second zero-raduis', 'placeholder' : 'Adresse e-mail'}} ) }}  
+                {{ form_row(form.plainPassword.first, {'attr': {'class': 'fadeIn third zero-raduis', 'placeholder' : 'Mot de passe'}} ) }}  
+                {{ form_row(form.plainPassword.second, {'attr': {'class': 'fadeIn third zero-raduis', 'placeholder' : 'Confirmer le mot de passe'}} ) }}  
+                {{ form_row(form._token) }}
+            
+                <input type="submit" class="fadeIn fourth zero-raduis pc" value="S'inscrire">
+                 {{ form_end(form) }}
+
+                               </form>
+              <h2>Déjà inscrit ?</h2>
+              <form action="{{ path('connexion') }}">
+				        <input type="submit" class="fadeIn fourth zero-raduis pc" value="Connectez-vous">
+			        </form>
+
+              
+    
+            </div>
+      </div>
+        </div>
+        <br>
+        <hr>
+
+
+
+
+{% endblock %}
+
+

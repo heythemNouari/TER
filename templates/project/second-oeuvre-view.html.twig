@@ -1,0 +1,421 @@
+{% extends "/dashboard-layout.html.twig" %}
+
+		{% block head %}
+
+		{{ parent() }}
+
+		<!-- Specific Page Vendor CSS -->
+		<link rel="stylesheet" href="{{ asset('resources/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css') }}" />
+		<link rel="stylesheet" href="{{ asset('resources/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css') }}" />
+		<link rel="stylesheet" href="{{ asset('resources/assets/vendor/morris/morris.css') }}" />
+
+		{% endblock %}
+
+				{% block title %}<h2>Votre projet : {{projet.nom}}</h2>{% endblock %}
+				{% block pageactuelle %}{{projet.nom}} - Second oeuvre{% endblock %}
+
+					{% block body %}
+
+	<div class="row">
+							<div class="col-xs-12">
+									<header class="panel-heading">
+									<h2 class="panel-title">{{projet.nom}} - Second oeuvre</h2>
+									</header>
+                                    <br>
+									<h4> {% if nbform < 12 %} Vous avez rempli {{nbform}} formulaire(s) sur 12 pour le second oeuvre de votre chantier. 
+										{% else %} Vous avez renseigné toutes les informations nécessaires pour le second oeuvre.
+										 {% endif %} </h4>
+		<div class="row">
+			{% if (nbform/12)*100 < 25 %}
+									<div class="progress progress-striped light active m-md">
+										<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{(nbform/12)*100}}" aria-valuemin="0" aria-valuemax="100" style="width: {{(nbform/12)*100}}%;">
+											{% if nbform == 12 %} Terminé {% else %} En cours {% endif %}
+										</div>
+									</div>
+			{% elseif (nbform/12)*100 > 25 and (nbform/12)*100 < 75 %}
+												<div class="progress progress-striped light active m-md">
+										<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{(nbform/12)*100}}" aria-valuemin="0" aria-valuemax="100" style="width: {{(nbform/12)*100}}%;">
+											{% if nbform == 12 %} Terminé {% else %} En cours {% endif %}
+										</div>
+									</div>
+			{% else %}
+												<div class="progress progress-striped light active m-md">
+										<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{(nbform/12)*100}}" aria-valuemin="0" aria-valuemax="100" style="width: {{(nbform/12)*100}}%;">
+											{% if nbform == 12 %} Terminé {% else %} En cours {% endif %}
+										</div>
+									</div>
+			{% endif %}
+			<br> <br>
+						<div class="col-md-4" data-plugin-portlet id="portlet-1">
+							<section class="panel panel-quartenary" id="panel-4" data-portlet-item>
+								<header class="panel-heading portlet-handler">
+									<div class="panel-actions">
+										<a href="#" {% if enduit == null %} class="fa fa-caret-down" {% else %} class="fa fa-caret-up" {% endif %}></a>
+									</div>
+
+									<h2 class="panel-title">Enduit de facade</h2>
+								</header>
+								<div class="panel-body" {% if enduit != null %} style="display: none;" {% endif %}>
+								{% if enduit == null %} 
+									Vous n'avez pas encore rempli ce formulaire. <br>
+									<a href="{{ path('enduit', {'id': projet.id}) }}"> Cliquez ici pour le remplir.</a>
+									{% else %}
+									Vous avez déjà rempli ce formulaire. <br>
+									Récapitulatif : <br>
+									surface de la facade :  ({{enduit.surface}}) <br>
+									nombre de couches  :  ({{enduit.nbCouches}}) <br>
+									
+									<br>
+									<b> Sous-total : </b> {{enduit.prix}} €
+									
+									{% endif %}								</div>
+							</section>
+							<section class="panel panel-secondary" id="panel-2" data-portlet-item>
+								<header class="panel-heading portlet-handler">
+									<div class="panel-actions">
+										<a href="#" {% if isolation == null %} class="fa fa-caret-down" {% else %} class="fa fa-caret-up" {% endif %}></a>
+									</div>
+
+									<h2 class="panel-title">L’isolation thermique et phonique</h2>
+								</header>
+								<div class="panel-body" {% if isolation != null %} style="display: none;" {% endif %}>
+								{% if isolation == null %} 
+									Vous n'avez pas encore rempli ce formulaire. <br>
+									<a href="{{ path('isolation', {'id': projet.id}) }}"> Cliquez ici pour le remplir.</a>
+									{% else %}
+									Vous avez déjà rempli ce formulaire. <br>
+									Récapitulatif : <br>
+									surface de l'isolation thermique :  ({{isolation.surfaceThermique}}) <br>
+									surface de l'isolation phonique :  ({{isolation.surfacePhonique}}) <br>
+									
+									<br>
+									<b> Sous-total : </b> {{isolation.prix}} €
+									
+									{% endif %}								</div>
+								
+							</section>
+							<section class="panel panel-tertiary" id="panel-3" data-portlet-item>
+								<header class="panel-heading portlet-handler">
+									<div class="panel-actions">
+										<a href="#" {% if revetement == null %} class="fa fa-caret-down" {% else %} class="fa fa-caret-up" {% endif %}></a>
+									</div>
+
+									<h2 class="panel-title">Le revêtement intérieur</h2>
+								</header>
+								<div class="panel-body" {% if revetement != null %} style="display: none;" {% endif %}>
+								{% if revetement == null %} 
+									Vous n'avez pas encore rempli ce formulaire. <br>
+									<a href="{{ path('revetement', {'id': projet.id}) }}"> Cliquez ici pour le remplir.</a>
+									{% else %}
+									Vous avez déjà rempli ce formulaire. <br>
+									Récapitulatif : <br>
+									surface  du papier classique :  ({{revetement.surfRevetClassique}}) <br>
+									surface  du papier avec motif :  ({{revetement.surfRevetMotif}}) <br>
+									
+									<br>
+									<b> Sous-total : </b> {{revetement.prix}} €
+									
+									{% endif %}								</div>
+								
+							</section>
+								<section class="panel panel-primary" id="panel-1" data-portlet-item>
+								<header class="panel-heading portlet-handler">
+									<div class="panel-actions">
+										<a href="#" {% if cloisons == null %} class="fa fa-caret-down" {% else %} class="fa fa-caret-up" {% endif %}></a>
+									</div>
+
+									<h2 class="panel-title">Les cloisons intérieures</h2>
+								</header>
+								<div class="panel-body" {% if cloisons != null %} style="display: none;" {% endif %}>
+									{% if cloisons == null %} 
+									Vous n'avez pas encore rempli ce formulaire. <br>
+									<a href="{{ path('cloisons', {'id': projet.id}) }}"> Cliquez ici pour le remplir.</a>
+									{% else %}
+									Vous avez déjà rempli ce formulaire. <br>
+									Récapitulatif : <br>
+									Nombre de mètres carrés de cloisons amovibles ({{cloisons.cloisonsAmovibles}}) <br>
+									Nombre de mètres carrés de cloisons sèches ({{cloisons.cloisonsSeches}}) <br>
+									Nombre de mètres carrés de cloisons pour pièces humides ({{cloisons.cloisonsPiecesHumides}}) <br>
+									Nombre de mètres carrés de cloisons en verre ({{cloisons.cloisonsVerre}}) <br>
+									Nombre de mètres carrés de cloisons japonaises ({{cloisons.cloisonsJaponaises}}) <br>
+									Nombre de mètres carrés de claustras intérieur ({{cloisons.claustraInterieur}}) <br>
+									Nombre de mètres carrés de cloisons vitrées style atelier ({{cloisons.cloisonsVitreesStyleAtelier}}) <br>
+									Nombre de mètres carrés de cloisons végétales ({{cloisons.cloisonsVegetales}}) <br>
+					
+									 <br>
+									<b> Sous-total : </b> {{cloisons.prix}} €
+									
+									{% endif %}							</div>
+							</section>
+						</div>
+						<div class="col-md-4" data-plugin-portlet id="portlet-2">
+							<section class="panel panel-quartenary" id="panel-4" data-portlet-item>
+								<header class="panel-heading portlet-handler">
+									<div class="panel-actions">
+										<a href="#" {% if evacuation == null %} class="fa fa-caret-down" {% else %} class="fa fa-caret-up" {% endif %}></a>
+									</div>
+
+									<h2 class="panel-title">Evacuation des fumées</h2>
+								</header>
+								<div class="panel-body" {% if evacuation != null %} style="display: none;" {% endif %}>
+								{% if evacuation == null %} 
+									Vous n'avez pas encore rempli ce formulaire. <br>
+									<a href="{{ path('evacuation', {'id': projet.id}) }}"> Cliquez ici pour le remplir.</a>
+									{% else %}
+									Vous avez déjà rempli ce formulaire. <br>
+									Récapitulatif : <br>
+									Matérieau utilisé pour votre cheminée :  ({{evacuation.materieauUtilise}}) <br>
+									Forme de votre cheminée :  ({{evacuation.forme}}) <br>
+									Type de votre cheminée :  ({{evacuation.typeCheminee}}) <br>
+									<br>
+									<b> Sous-total : </b> {{evacuation.prix}} € 
+									
+									{% endif %}								</div>
+							</section>
+
+							
+							
+							<section class="panel panel-success" id="panel-5" data-portlet-item>
+								<header class="panel-heading portlet-handler">
+									<div class="panel-actions">
+										<a href="#" {% if menuiseriesInt == null %} class="fa fa-caret-down" {% else %} class="fa fa-caret-up" {% endif %}></a>
+									</div>
+
+									<h2 class="panel-title">Les menuiseries intérieures</h2>
+								</header>
+								<div class="panel-body" {% if menuiseriesInt != null %} style="display: none;" {% endif %}>
+								{% if menuiseriesInt == null %} 
+									Vous n'avez pas encore rempli ce formulaire. <br>
+									<a href="{{ path('menuiseriesInt', {'id': projet.id}) }}"> Cliquez ici pour le remplir.</a>
+									{% else %}
+									Vous avez déjà rempli ce formulaire. <br>
+									Récapitulatif : <br>
+									Nombre de portes pleines ({{menuiseriesInt.portesPleines}}) <br>
+									Nombre de portes vitrées ({{menuiseriesInt.portesVitrees}})  <br>
+									Nombre de portes battantes ({{menuiseriesInt.portesBattantes}})  <br>
+									Nombre de portes coulissantes ({{menuiseriesInt.portesCoulissantes}})  <br>
+									Nombre de portes de placard pliantes ({{menuiseriesInt.portesPlacardPliantes}})  <br>
+									Nombre de portes de placard battantes ({{menuiseriesInt.portesPlacardBattantes}})  <br>
+									Nombre de portes de placard coulissantes ({{menuiseriesInt.portesPlacardCoulissantes}})  <br>
+									Matérieau choisi pour vos rampes ({{menuiseriesInt.materieauRampes}})  <br>
+									Nombre de rampes à poser ({{menuiseriesInt.tailleRampes}} m2)  <br>
+									Matérieau choisi pour vos balustrades ({{menuiseriesInt.materieauBalustrades}})  <br>
+									Nombre de balustrades à poser ({{menuiseriesInt.tailleBalustrades}} m2)  <br>
+
+									<br>
+									<b> Sous-total : </b> {{menuiseriesInt.prix}} € 
+									
+									{% endif %}									</div>
+							</section>
+							<section class="panel panel-warning" id="panel-6" data-portlet-item>
+								<header class="panel-heading portlet-handler">
+									<div class="panel-actions">
+										<a href="#" {% if escaliers == null %} class="fa fa-caret-down" {% else %} class="fa fa-caret-up" {% endif %}></a>
+									</div>
+
+									<h2 class="panel-title">Les escaliers</h2>
+								</header>
+								<div class="panel-body" {% if escaliers != null %} style="display: none;" {% endif %}>
+									{% if escaliers == null %}
+										Vous n'avez pas encore rempli ce formulaire. <br>
+										<a href="{{ path('escaliers', {'id': projet.id}) }}"> Cliquez ici pour le remplir.</a>
+									{% else %}
+										Vous avez déjà rempli ce formulaire. <br>
+										Récapitulatif : <br>
+										Type d'escalier :  {{escaliers.typeEscalier}} <br>
+										Dimensions :  {{escaliers.dimensions}} <br>
+										Materiel :  {{escaliers.materiaux}} <br>
+
+										<b> Sous-total : </b> {{escaliers.prix}} € 
+
+									{% endif %}									</div>
+							</section>
+								<section class="panel panel-quartenary" id="panel-4" data-portlet-item>
+								<header class="panel-heading portlet-handler">
+									<div class="panel-actions">
+										<a href="#" {% if plomberie == null %} class="fa fa-caret-down" {% else %} class="fa fa-caret-up" {% endif %}></a>
+									</div>
+
+									<h2 class="panel-title">La plomberie</h2>
+								</header>
+									<div class="panel-body" {% if plomberie != null %} style="display: none;" {% endif %}>
+										{% if plomberie == null %}
+											Vous n'avez pas encore rempli ce formulaire. <br>
+											<a href="{{ path('plomberie', {'id': projet.id}) }}"> Cliquez ici pour le remplir.</a>
+										{% else %}
+											Vous avez déjà rempli ce formulaire. <br>
+											Récapitulatif : <br>
+											Dimensions tuyau :  {{plomberie.nbMetreTuyau}} m <br>
+											Type tuyau :  {{plomberie.typeTuyau}} <br>
+											Nombre de robinets :  {{plomberie.nbRobinets}} <br>
+											Nombre de WC :  {{plomberie.nbWC}} <br>
+											Type chauffage eau :  {{plomberie.typeChauffageEau}} <br>
+											Type compteur :  {{plomberie.typeCompteur}} <br>
+											Nombre de baignoires :  {{plomberie.nbBaignoire}} <br>
+											Nombre de douches :  {{plomberie.nbDouche}} <br>
+
+											<b> Sous-total : </b> {{plomberie.prix}} </b> € 
+
+										{% endif %}									</div>
+							</section>
+						</div>
+						<div class="col-md-4" data-plugin-portlet id="portlet-3">
+							<section class="panel panel-info" id="panel-7" data-portlet-item>
+								<header class="panel-heading portlet-handler">
+									<div class="panel-actions">
+										<a href="#" {% if electricite == null %} class="fa fa-caret-down" {% else %} class="fa fa-caret-up" {% endif %}></a>
+									</div>
+
+									<h2 class="panel-title">L’électricité</h2> </a>
+								</header>
+								<div class="panel-body" {% if electricite != null %} style="display: none;" {% endif %}>
+									{% if electricite == null %}
+										Vous n'avez pas encore rempli ce formulaire. <br>
+										<a href="{{ path('electricite', {'id': projet.id}) }}"> Cliquez ici pour le remplir.</a>
+									{% else %}
+										Vous avez déjà rempli ce formulaire. <br>
+										Récapitulatif : <br>
+										Dimension cable :  {{electricite.dimensionCable}} m <br>
+										Nombre de chauffage :  {{electricite.nbChauffage}} <br>
+										Nombre d'interrupteurs :  {{electricite.nbInterrupteur}} <br>
+										Nombre de sortie de lumières:  {{electricite.nbSortieLumieres}} <br>
+										Nombre de prises électriques :  {{electricite.nbPriseElectrique}} <br>
+										Nombre de volets roulant :  {{electricite.nbVoletRoulant}} <br>
+
+										<b> Sous-total : </b> {{electricite.prix}} </b> € 
+
+									{% endif %}									</div>
+							</section>
+							<section class="panel panel-dark" id="panel-8" data-portlet-item>
+								<header class="panel-heading portlet-handler">
+									<div class="panel-actions">
+										<a href="#" class="fa fa-caret-down" }></a>
+									</div>
+
+									<h2 class="panel-title">La ventilation</h2>
+								</header>
+									<div class="panel-body" {% if ventilation != null %} style="display: none;" {% endif %}>
+									{% if ventilation == null %} 
+									Vous n'avez pas encore rempli ce formulaire. <br>
+									<a href="{{ path('ventilation', {'id': projet.id}) }}"> Cliquez ici pour le remplir.</a>
+									{% else %}
+									Vous avez déjà rempli ce formulaire. <br>
+									Récapitulatif : <br>
+									Type de Ventilation : {{ventilation.typeVentilation}} <br>
+									<b> Sous-total : </b> {{ventilation.prix}}  € 
+									
+									{% endif %}								</div>
+							</section>
+
+							<section class="panel panel-danger" id="panel-9" data-portlet-item>
+								<header class="panel-heading portlet-handler">
+									<div class="panel-actions">
+										<a href="#" class="fa fa-caret-down" ></a>
+									</div>
+
+									<h2 class="panel-title">La climatisation</h2>
+								</header>
+								<div class="panel-body" {% if climatisation != null %} style="display: none;" {% endif %}>
+									{% if climatisation == null %} 
+									Vous n'avez pas encore rempli ce formulaire. <br>
+									<a href="{{ path('climatisation', {'id': projet.id}) }}"> Cliquez ici pour le remplir.</a>
+									{% else %}
+									Vous avez déjà rempli ce formulaire. <br>
+									Récapitulatif : <br>
+									<b>Type de climatisation : {{climatisation.typeClimatisation}}</b> <br>
+									<b> Sous-total : </b> {{climatisation.prix}} </b> €
+									
+									{% endif %}								</div>
+							</section>
+
+							<section class="panel panel-info" id="panel-7" data-portlet-item>
+								<header class="panel-heading portlet-handler">
+									<div class="panel-actions">
+										<a href="#" class="fa fa-caret-down" ></a>
+									</div>
+
+									<h2 class="panel-title">La domotique</h2> </a>
+								</header>
+								<div class="panel-body" {% if domotique != null %} style="display: none;" {% endif %}>
+									{% if domotique == null %} 
+									Vous n'avez pas encore rempli ce formulaire. <br>
+									<a href="{{ path('domotique', {'id': projet.id}) }}"> Cliquez ici pour le remplir.</a>
+									{% else %}
+									Vous avez déjà rempli ce formulaire. <br>
+									Récapitulatif : <br>
+									{% if domotique.regularisationChauffage != null %}
+									<b>Option Chauffage autonome<b>
+									<br/>
+									{% endif %}
+									{% if domotique.eclairageAuto != null %}
+									<b>Option Eclairage automatique<b>
+									<br/>
+									{% endif %}
+									{% if domotique.ouvertureFermetureAuto != null %}
+									<b>Option ouverture et fermeture automatique des fenêtre<b>
+									<br/>
+									{% endif %}
+									{% if domotique.autonomieEau != null %}
+									<b>Option Autonomie du débit d'eau<b>
+									<br/>
+									{% endif %}
+									{% if domotique.detecteurEtAlarme != null %}
+									<b>Option alarme et détecteurs<b>
+									<br/>
+									{% endif %}
+									<b> Sous-total : </b> {{domotique.prix}} </b> €
+									
+									{% endif %}								</div>
+							</section>
+
+						</div>
+					</div>
+
+						<section class="panel panel-featured-left panel-featured-secondary">
+									<div class="panel-body">
+										<div class="widget-summary">
+											<div class="widget-summary-col widget-summary-col-icon">
+												<div class="summary-icon bg-secondary">
+													<i class="fa fa-usd"></i>
+												</div>
+											</div>
+											<div class="widget-summary-col">
+												<div class="summary">
+													<h4 class="title">Sous-total</h4>
+													<div class="info">
+																						{% if nbform == 12 %} <strong class="amount"> 	
+									{{cloisons.prix + domotique.prix + isolation.prix + enduit.prix + climatisation.prix + ventilation.prix + 
+									electricite.prix + plomberie.prix + escaliers.prix + menuiseriesInt.prix + evacuation.prix + revetement.prix }} €</strong>
+									{% else %} Vous devez avoir rempli tous les formulaires pour avoir le prix total du second oeuvre.
+									{% endif %} 
+													</div>
+													
+												</div>
+											</div>
+										</div>
+									</div>
+								</section>
+					
+						
+									</div>
+									<div class="panel-footer">
+										<ul class="pager">
+										<a href="{{path('gros-oeuvre', {'id': projet.id}) }}"> <button class="mb-xs mt-xs mr-xs btn btn-lg btn-default"
+										type="button" >Revenir au gros oeuvre</button></a>
+										</ul>
+										{% if nbform == 12 %}
+										<ul class="pager">
+										<a href="#"> <button class="mb-xs mt-xs mr-xs btn btn-lg btn-default"
+										type="button">Accéder à la facture finale</button></a>
+										</ul>
+										{% endif %}
+									</div>
+								</section>
+							</div>
+						</div>
+
+					{% endblock %}
+
+		{% block javascripts %}
+
+		{% endblock %}
